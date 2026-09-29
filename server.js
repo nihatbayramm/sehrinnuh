@@ -215,6 +215,22 @@ app.post('/api/gallery/upload', upload.single('image'), (req, res) => {
     res.json({ success: true, image: newImage });
 });
 
+// Upload team image (uzman kadro resmi için - galeriye eklemez)
+app.post('/api/team/upload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: 'Dosya yüklenemedi' });
+    }
+    
+    const imageUrl = `/uploads/${req.file.filename}`;
+    // Galeriyi güncelleme, sadece URL'i döndür
+    res.json({ 
+        success: true, 
+        url: imageUrl,
+        alt: req.body.alt || req.file.originalname,
+        title: req.body.title || req.file.originalname
+    });
+});
+
 // Delete image
 app.delete('/api/gallery/:id', (req, res) => {
     const gallery = readJSON('gallery.json');

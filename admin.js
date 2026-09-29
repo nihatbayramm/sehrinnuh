@@ -818,13 +818,13 @@ async function handleTeamAdd(event) {
         formData.append('title', teamName);
 
         try {
-            const response = await fetch(`${API_BASE}/gallery/upload`, {
+            const response = await fetch(`${API_BASE}/team/upload`, {
                 method: 'POST',
                 body: formData
             });
             const result = await response.json();
             if (result.success) {
-                imageUrl = result.image.url;
+                imageUrl = result.url;
             } else {
                 alert('Resim yüklenirken bir hata oluştu.');
                 return;
@@ -930,13 +930,13 @@ async function handleTeamEdit(event) {
         formData.append('title', teamName);
 
         try {
-            const response = await fetch(`${API_BASE}/gallery/upload`, {
+            const response = await fetch(`${API_BASE}/team/upload`, {
                 method: 'POST',
                 body: formData
             });
             const result = await response.json();
             if (result.success) {
-                content.team[memberIndex].image = result.image.url;
+                content.team[memberIndex].image = result.url;
             } else {
                 alert('Resim yüklenirken bir hata oluştu.');
                 return;
