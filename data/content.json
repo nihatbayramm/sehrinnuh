@@ -1,0 +1,28 @@
+{
+  "about": {
+    "title": "Hakkımızda",
+    "text": "Özel Şehri Nuh Özel Eğitim ve Rehabilitasyon Merkezi, 2020 yılından bu yana özel eğitime ihtiyaç duyan çocuk ve yetişkinlere aynı zamanda evde destek eğitimi vermektedir.\nEğitim merkezimizde gerekli tüm eğitim öğretim materyalleri, fizyoterapi odası, bireysel sınıflar, grup sınıfları ve oyun-etkinlik odaları bulunmaktadır."
+  },
+  "contact": {
+    "phone": "0530 363 94 34, 0533 305 25 73, 0533 301 25 73",
+    "email": "sehrinuh20@gmail.com",
+    "address": "İkizce köyü küme evleri 121/1, Merkez/Şırnak"
+  },
+  "programs": [
+    {"id":1,"title":"Bedensel Engelliler","description":"Bedensel engelli bireyler için özel destek eğitim programı"},
+    {"id":2,"title":"Zihinsel Engelliler","description":"Zihinsel engelli bireyler için özel destek eğitim programı"},
+    {"id":3,"title":"İşitme Engelliler","description":"İşitme engelli bireyler için özel destek eğitim programı"},
+    {"id":4,"title":"Dil ve Konuşma","description":"Dil ve konuşma desteği eğitim programı"},
+    {"id":5,"title":"Otizm Spektrum","description":"Otizm spektrum bozukluğu destek eğitim programı"},
+    {"id":6,"title":"Özel Öğrenme Güçlüğü","description":"Özel öğrenme güçlüğü destek eğitim programı"}
+  ],
+  "team": [
+    {
+      "id": 1,
+      "name": "Vedat Bayram",
+      "title": "Psikolojik Danışmanlık ve Rehberlik Uzmanı",
+      "description": "Öğrencilerimizin psikolojik gelişimi ve rehberlik hizmetleri alanında uzman destek sağlamaktadır.",
+      "image": "vedat.jpg"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "url": "image.png",
+    "alt": "Merkez Görünümü",
+    "title": "Merkez Görünümü"
+  },
+  {
+    "id": 2,
+    "url": "image copy.png",
+    "alt": "Eğitim Ortamı",
+    "title": "Eğitim Ortamı"
+  },
+  {
+    "id": 3,
+    "url": "image copy 2.png",
+    "alt": "Uzman Kadro",
+    "title": "Uzman Kadro"
+  },
+  {
+    "id": 4,
+    "url": "image copy 3.png",
+    "alt": "Aktiviteler",
+    "title": "Aktiviteler"
+  }
+]

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Giriş - Özel Şehr-i Nuh</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <img src="logo.png" alt="Özel Şehr-i Nuh Logo" class="login-logo">
+                <h1>Admin Paneli</h1>
+                <p>Özel Şehr-i Nuh Yönetim Sistemi</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Kullanıcı Adı</label>
+                    <input type="text" id="username" name="username" required placeholder="Kullanıcı adınızı girin">
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" name="password" required placeholder="Şifrenizi girin">
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Beni hatırla</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-login">Giriş Yap</button>
+                <div id="errorMessage" class="error-message"></div>
+            </form>
+            <div class="login-footer">
+                <p>Özel Şehr-i Nuh Özel Eğitim ve Rehabilitasyon Merkezi</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.APP_CONFIG = {
+            API_BASE: '/api'
+        };
+    </script>
+    <script src="admin.js"></script>
+</body>
+</html>
