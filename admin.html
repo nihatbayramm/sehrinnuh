@@ -176,6 +176,7 @@
                         <button class="tab-btn active" data-tab="about">Hakkımızda</button>
                         <button class="tab-btn" data-tab="contact">İletişim</button>
                         <button class="tab-btn" data-tab="programs">Programlar</button>
+                        <button class="tab-btn" data-tab="team">Uzman Kadro</button>
                     </div>
 
                     <div id="about" class="tab-content active">
@@ -215,6 +216,13 @@
                             <!-- Programlar buraya yüklenecek -->
                         </div>
                         <button id="addProgramBtn" class="btn-add">+ Program Ekle</button>
+                    </div>
+
+                    <div id="team" class="tab-content">
+                        <div class="team-list" id="teamList">
+                            <!-- Uzman kadro buraya yüklenecek -->
+                        </div>
+                        <button id="addTeamBtn" class="btn-add">+ Uzman Ekle</button>
                     </div>
                 </div>
             </section>
@@ -374,6 +382,111 @@
                     <textarea id="programDescription" name="programDescription" rows="3" required placeholder="Program açıklaması"></textarea>
                 </div>
                 <button type="submit" class="btn-save">Ekle</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="teamModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Uzman Ekle</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="teamForm" class="modal-form">
+                <div class="form-group">
+                    <label for="teamName">Ad Soyad</label>
+                    <input type="text" id="teamName" name="teamName" required placeholder="Ad Soyad">
+                </div>
+                <div class="form-group">
+                    <label for="teamTitle">Unvan</label>
+                    <input type="text" id="teamTitle" name="teamTitle" required placeholder="Örn: Psikolojik Danışman">
+                </div>
+                <div class="form-group">
+                    <label for="teamSpecialty">Uzmanlık Alanı</label>
+                    <input type="text" id="teamSpecialty" name="teamSpecialty" required placeholder="Örn: Çocuk Psikolojisi">
+                </div>
+                <div class="form-group">
+                    <label for="teamDescription">Açıklama</label>
+                    <textarea id="teamDescription" name="teamDescription" rows="3" required placeholder="Uzman hakkında kısa bilgi"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Resim Yükleme Yöntemi</label>
+                    <div class="upload-method-toggle">
+                        <label class="radio-label">
+                            <input type="radio" name="teamUploadMethod" value="file" checked>
+                            <span>Dosya Yükle</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="teamUploadMethod" value="url">
+                            <span>URL ile Ekle</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" id="teamFileInputGroup">
+                    <label for="teamImageFile">Resim Dosyası</label>
+                    <input type="file" id="teamImageFile" name="teamImageFile" accept="image/*">
+                    <small class="form-hint">JPEG, PNG, GIF, WebP formatları (max 10MB)</small>
+                </div>
+                <div class="form-group" id="teamUrlInputGroup" style="display: none;">
+                    <label for="teamImageUrl">Resim URL</label>
+                    <input type="url" id="teamImageUrl" name="teamImageUrl" placeholder="https://example.com/image.jpg">
+                </div>
+                <button type="submit" class="btn-save">Ekle</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="editTeamModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Uzman Düzenle</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="editTeamForm" class="modal-form">
+                <input type="hidden" id="editTeamId" name="editTeamId">
+                <div class="form-group">
+                    <label for="editTeamName">Ad Soyad</label>
+                    <input type="text" id="editTeamName" name="editTeamName" required placeholder="Ad Soyad">
+                </div>
+                <div class="form-group">
+                    <label for="editTeamTitle">Unvan</label>
+                    <input type="text" id="editTeamTitle" name="editTeamTitle" required placeholder="Örn: Psikolojik Danışman">
+                </div>
+                <div class="form-group">
+                    <label for="editTeamSpecialty">Uzmanlık Alanı</label>
+                    <input type="text" id="editTeamSpecialty" name="editTeamSpecialty" required placeholder="Örn: Çocuk Psikolojisi">
+                </div>
+                <div class="form-group">
+                    <label for="editTeamDescription">Açıklama</label>
+                    <textarea id="editTeamDescription" name="editTeamDescription" rows="3" required placeholder="Uzman hakkında kısa bilgi"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Resim Yükleme Yöntemi</label>
+                    <div class="upload-method-toggle">
+                        <label class="radio-label">
+                            <input type="radio" name="editTeamUploadMethod" value="keep" checked>
+                            <span>Mevcut Resmi Koru</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="editTeamUploadMethod" value="file">
+                            <span>Yeni Dosya Yükle</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="editTeamUploadMethod" value="url">
+                            <span>URL ile Değiştir</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" id="editTeamFileInputGroup" style="display: none;">
+                    <label for="editTeamImageFile">Yeni Resim Dosyası</label>
+                    <input type="file" id="editTeamImageFile" name="editTeamImageFile" accept="image/*">
+                    <small class="form-hint">JPEG, PNG, GIF, WebP formatları (max 10MB)</small>
+                </div>
+                <div class="form-group" id="editTeamUrlInputGroup" style="display: none;">
+                    <label for="editTeamImageUrl">Yeni Resim URL</label>
+                    <input type="url" id="editTeamImageUrl" name="editTeamImageUrl" placeholder="https://example.com/image.jpg">
+                </div>
+                <button type="submit" class="btn-save">Güncelle</button>
             </form>
         </div>
     </div>

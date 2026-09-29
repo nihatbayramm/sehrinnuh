@@ -269,6 +269,8 @@ async function loadContentForTab(tab) {
         document.getElementById('contactAddress').value = content.contact.address;
     } else if (tab === 'programs') {
         renderPrograms(content.programs);
+    } else if (tab === 'team') {
+        renderTeam(content.team);
     }
 }
 
@@ -330,6 +332,33 @@ function renderPrograms(programs) {
     `).join('');
 }
 
+function renderTeam(team) {
+    const teamList = document.getElementById('teamList');
+
+    if (!team || team.length === 0) {
+        teamList.innerHTML = '<p class="no-data">Henüz uzman eklenmemiş</p>';
+        return;
+    }
+
+    teamList.innerHTML = team.map(member => `
+        <div class="team-item">
+            <div class="team-image">
+                <img src="${member.image}" alt="${member.name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+            </div>
+            <div class="team-info">
+                <h4>${member.name}</h4>
+                <p class="team-title">${member.title}</p>
+                <p class="team-specialty">${member.specialty || ''}</p>
+                <p class="team-description">${member.description || ''}</p>
+            </div>
+            <div class="team-actions">
+                <button class="btn-secondary" onclick="editTeam(${member.id})">Düzenle</button>
+                <button class="btn-delete" onclick="deleteTeam(${member.id})">Sil</button>
+            </div>
+        </div>
+    `).join('');
+}
+
 async function deleteProgram(id) {
     if (confirm('Bu programı silmek istediğinizden emin misiniz?')) {
         const content = await apiCall('/content');
@@ -340,6 +369,22 @@ async function deleteProgram(id) {
 
         if (result.success) {
             loadContentForTab('programs');
+        }
+    }
+}
+
+async function deleteTeam(id) {
+    if (confirm('Bu uzmanı silmek istediğinizden emin misiniz?')) {
+        const content = await apiCall('/content');
+        if (content.success === false) return;
+
+        content.team = content.team.filter(t => t.id !== id);
+        const result = await apiCall('/content', 'PUT', content);
+
+        if (result.success) {
+            loadContentForTab('team');
+        } else {
+            alert('Uzman silinemedi!');
         }
     }
 }
@@ -663,6 +708,68 @@ function handleProgramModal() {
     document.getElementById('programForm').addEventListener('submit', handleProgramAdd);
 }
 
+// Team modal functionality
+function handleTeamModal() {
+    document.getElementById('addTeamBtn').addEventListener('click', () => {
+        document.getElementById('teamModal').classList.add('show');
+    });
+
+    // Yükleme yöntemi değiştirme
+    const teamUploadMethodRadios = document.querySelectorAll('input[name="teamUploadMethod"]');
+    teamUploadMethodRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const fileInputGroup = document.getElementById('teamFileInputGroup');
+            const urlInputGroup = document.getElementById('teamUrlInputGroup');
+            const imageFile = document.getElementById('teamImageFile');
+            const imageUrl = document.getElementById('teamImageUrl');
+
+            if (e.target.value === 'file') {
+                fileInputGroup.style.display = 'block';
+                urlInputGroup.style.display = 'none';
+                imageFile.required = true;
+                imageUrl.required = false;
+            } else {
+                fileInputGroup.style.display = 'none';
+                urlInputGroup.style.display = 'block';
+                imageFile.required = false;
+                imageUrl.required = true;
+            }
+        });
+    });
+
+    document.getElementById('teamForm').addEventListener('submit', handleTeamAdd);
+
+    // Edit team modal yöntemi değiştirme
+    const editTeamUploadMethodRadios = document.querySelectorAll('input[name="editTeamUploadMethod"]');
+    editTeamUploadMethodRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const fileInputGroup = document.getElementById('editTeamFileInputGroup');
+            const urlInputGroup = document.getElementById('editTeamUrlInputGroup');
+            const imageFile = document.getElementById('editTeamImageFile');
+            const imageUrl = document.getElementById('editTeamImageUrl');
+
+            if (e.target.value === 'keep') {
+                fileInputGroup.style.display = 'none';
+                urlInputGroup.style.display = 'none';
+                imageFile.required = false;
+                imageUrl.required = false;
+            } else if (e.target.value === 'file') {
+                fileInputGroup.style.display = 'block';
+                urlInputGroup.style.display = 'none';
+                imageFile.required = true;
+                imageUrl.required = false;
+            } else {
+                fileInputGroup.style.display = 'none';
+                urlInputGroup.style.display = 'block';
+                imageFile.required = false;
+                imageUrl.required = true;
+            }
+        });
+    });
+
+    document.getElementById('editTeamForm').addEventListener('submit', handleTeamEdit);
+}
+
 async function handleProgramAdd(event) {
     event.preventDefault();
 
@@ -684,6 +791,179 @@ async function handleProgramAdd(event) {
         loadContentForTab('programs');
     } else {
         alert('Program eklenemedi!');
+    }
+}
+
+async function handleTeamAdd(event) {
+    event.preventDefault();
+
+    const uploadMethod = document.querySelector('input[name="teamUploadMethod"]:checked').value;
+    const teamName = document.getElementById('teamName').value;
+    const teamTitle = document.getElementById('teamTitle').value;
+    const teamSpecialty = document.getElementById('teamSpecialty').value;
+    const teamDescription = document.getElementById('teamDescription').value;
+
+    let imageUrl;
+
+    if (uploadMethod === 'file') {
+        const imageFile = document.getElementById('teamImageFile').files[0];
+        if (!imageFile) {
+            alert('Lütfen bir resim dosyası seçin.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        formData.append('alt', teamName);
+        formData.append('title', teamName);
+
+        try {
+            const response = await fetch(`${API_BASE}/gallery/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                imageUrl = result.image.url;
+            } else {
+                alert('Resim yüklenirken bir hata oluştu.');
+                return;
+            }
+        } catch (error) {
+            console.error('Upload Error:', error);
+            alert('Resim yüklenirken bir hata oluştu.');
+            return;
+        }
+    } else {
+        imageUrl = document.getElementById('teamImageUrl').value;
+        if (!imageUrl) {
+            alert('Lütfen bir resim URL\'i girin.');
+            return;
+        }
+    }
+
+    const content = await apiCall('/content');
+    if (content.success === false) return;
+
+    const newTeamMember = {
+        id: Date.now(),
+        name: teamName,
+        title: teamTitle,
+        specialty: teamSpecialty,
+        description: teamDescription,
+        image: imageUrl
+    };
+
+    content.team = content.team || [];
+    content.team.push(newTeamMember);
+    const result = await apiCall('/content', 'PUT', content);
+
+    if (result.success) {
+        document.getElementById('teamForm').reset();
+        document.querySelector('input[name="teamUploadMethod"][value="file"]').checked = true;
+        document.getElementById('teamFileInputGroup').style.display = 'block';
+        document.getElementById('teamUrlInputGroup').style.display = 'none';
+        document.getElementById('teamModal').classList.remove('show');
+        loadContentForTab('team');
+    } else {
+        alert('Uzman eklenemedi!');
+    }
+}
+
+async function editTeam(id) {
+    const content = await apiCall('/content');
+    if (content.success === false) return;
+
+    const member = content.team.find(t => t.id === id);
+    if (!member) return;
+
+    document.getElementById('editTeamId').value = member.id;
+    document.getElementById('editTeamName').value = member.name;
+    document.getElementById('editTeamTitle').value = member.title;
+    document.getElementById('editTeamSpecialty').value = member.specialty || '';
+    document.getElementById('editTeamDescription').value = member.description || '';
+
+    // Reset upload method
+    document.querySelector('input[name="editTeamUploadMethod"][value="keep"]').checked = true;
+    document.getElementById('editTeamFileInputGroup').style.display = 'none';
+    document.getElementById('editTeamUrlInputGroup').style.display = 'none';
+
+    document.getElementById('editTeamModal').classList.add('show');
+}
+
+async function handleTeamEdit(event) {
+    event.preventDefault();
+
+    const id = parseInt(document.getElementById('editTeamId').value);
+    const uploadMethod = document.querySelector('input[name="editTeamUploadMethod"]:checked').value;
+    const teamName = document.getElementById('editTeamName').value;
+    const teamTitle = document.getElementById('editTeamTitle').value;
+    const teamSpecialty = document.getElementById('editTeamSpecialty').value;
+    const teamDescription = document.getElementById('editTeamDescription').value;
+
+    const content = await apiCall('/content');
+    if (content.success === false) return;
+
+    const memberIndex = content.team.findIndex(t => t.id === id);
+    if (memberIndex === -1) {
+        alert('Uzman bulunamadı!');
+        return;
+    }
+
+    // Update member info
+    content.team[memberIndex].name = teamName;
+    content.team[memberIndex].title = teamTitle;
+    content.team[memberIndex].specialty = teamSpecialty;
+    content.team[memberIndex].description = teamDescription;
+
+    // Handle image update
+    if (uploadMethod === 'file') {
+        const imageFile = document.getElementById('editTeamImageFile').files[0];
+        if (!imageFile) {
+            alert('Lütfen bir resim dosyası seçin.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        formData.append('alt', teamName);
+        formData.append('title', teamName);
+
+        try {
+            const response = await fetch(`${API_BASE}/gallery/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                content.team[memberIndex].image = result.image.url;
+            } else {
+                alert('Resim yüklenirken bir hata oluştu.');
+                return;
+            }
+        } catch (error) {
+            console.error('Upload Error:', error);
+            alert('Resim yüklenirken bir hata oluştu.');
+            return;
+        }
+    } else if (uploadMethod === 'url') {
+        const imageUrl = document.getElementById('editTeamImageUrl').value;
+        if (!imageUrl) {
+            alert('Lütfen bir resim URL\'i girin.');
+            return;
+        }
+        content.team[memberIndex].image = imageUrl;
+    }
+    // If 'keep', don't change the image
+
+    const result = await apiCall('/content', 'PUT', content);
+
+    if (result.success) {
+        document.getElementById('editTeamForm').reset();
+        document.getElementById('editTeamModal').classList.remove('show');
+        loadContentForTab('team');
+    } else {
+        alert('Uzman güncellenemedi!');
     }
 }
 
@@ -712,6 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
         handleMessagesManagement();
         handleUsersManagement();
         handleProgramModal();
+        handleTeamModal();
 
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
@@ -729,3 +1010,5 @@ window.markAsRead = markAsRead;
 window.deleteMessage = deleteMessage;
 window.deleteUser = deleteUser;
 window.editUser = editUser;
+window.deleteTeam = deleteTeam;
+window.editTeam = editTeam;
