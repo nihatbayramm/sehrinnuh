@@ -107,9 +107,19 @@ contactForm?.addEventListener('submit', async event => {
 // Dynamic content loaded from the same Render service as the website.
 async function loadDynamicContent() {
     try {
+        const fetchOptions = {
+            // Cache kontrol: Her zaman sunucudan güncel veri al
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        };
+        
         const [contentResponse, galleryResponse] = await Promise.all([
-            fetch(apiUrl('/content'), { cache: 'no-store' }),
-            fetch(apiUrl('/gallery'), { cache: 'no-store' })
+            fetch(apiUrl('/content'), fetchOptions),
+            fetch(apiUrl('/gallery'), fetchOptions)
         ]);
         if (!contentResponse.ok || !galleryResponse.ok) throw new Error('API verisi alınamadı');
 
@@ -171,3 +181,13 @@ async function loadDynamicContent() {
 }
 
 document.addEventListener('DOMContentLoaded', loadDynamicContent);
+
+// Sayfa önceden yüklenirse cache'i temizle (tarayıcı geri tuşu vs.)
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        loadDynamicContent();
+    }
+});
+
+// 30 saniyede bir otomatik olarak içeriği güncelle
+setInterval(loadDynamicContent, 30000);
