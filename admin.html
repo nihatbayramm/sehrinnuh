@@ -11,7 +11,6 @@
 </head>
 <body>
     <div class="admin-container">
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <img src="logo.png" alt="Özel Şehr-i Nuh Logo" class="sidebar-logo">
@@ -77,9 +76,7 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Header -->
             <header class="admin-header">
                 <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menüyü aç/kapat">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -107,7 +104,6 @@
                 </div>
             </header>
 
-            <!-- Dashboard Section -->
             <section id="dashboard" class="content-section active">
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -169,7 +165,6 @@
                 </div>
             </section>
 
-            <!-- Content Management Section -->
             <section id="content" class="content-section">
                 <div class="content-management">
                     <div class="content-tabs">
@@ -212,35 +207,27 @@
                     </div>
 
                     <div id="programs" class="tab-content">
-                        <div class="programs-list" id="programsList">
-                            <!-- Programlar buraya yüklenecek -->
-                        </div>
+                        <div class="programs-list" id="programsList"></div>
                         <button id="addProgramBtn" class="btn-add">+ Program Ekle</button>
                     </div>
 
                     <div id="team" class="tab-content">
-                        <div class="team-list" id="teamList">
-                            <!-- Uzman kadro buraya yüklenecek -->
-                        </div>
+                        <div class="team-list" id="teamList"></div>
                         <button id="addTeamBtn" class="btn-add">+ Uzman Ekle</button>
                     </div>
                 </div>
             </section>
 
-            <!-- Gallery Management Section -->
             <section id="gallery" class="content-section">
                 <div class="gallery-management">
                     <div class="gallery-header">
                         <h2>Galeri Yönetimi</h2>
                         <button id="addImageBtn" class="btn-add">+ Resim Ekle</button>
                     </div>
-                    <div id="galleryGrid" class="gallery-grid-admin">
-                        <!-- Galeri resimleri buraya yüklenecek -->
-                    </div>
+                    <div id="galleryGrid" class="gallery-grid-admin"></div>
                 </div>
             </section>
 
-            <!-- Messages Section -->
             <section id="messages" class="content-section">
                 <div class="messages-management">
                     <div class="messages-header">
@@ -253,22 +240,18 @@
                 </div>
             </section>
 
-            <!-- Users Section -->
             <section id="users" class="content-section">
                 <div class="users-management">
                     <div class="users-header">
                         <h2>Kullanıcı Yönetimi</h2>
                         <button id="addUserBtn" class="btn-add">+ Kullanıcı Ekle</button>
                     </div>
-                    <div id="usersList" class="users-list">
-                        <!-- Kullanıcılar buraya yüklenecek -->
-                    </div>
+                    <div id="usersList" class="users-list"></div>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- Modals -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -279,14 +262,8 @@
                 <div class="form-group">
                     <label>Yükleme Yöntemi</label>
                     <div class="upload-method-toggle">
-                        <label class="radio-label">
-                            <input type="radio" name="uploadMethod" value="file" checked>
-                            <span>Dosya Yükle</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="uploadMethod" value="url">
-                            <span>URL ile Ekle</span>
-                        </label>
+                        <label class="radio-label"><input type="radio" name="uploadMethod" value="file" checked><span>Dosya Yükle</span></label>
+                        <label class="radio-label"><input type="radio" name="uploadMethod" value="url"><span>URL ile Ekle</span></label>
                     </div>
                 </div>
                 <div class="form-group" id="fileInputGroup">
@@ -412,14 +389,8 @@
                 <div class="form-group">
                     <label>Resim Yükleme Yöntemi</label>
                     <div class="upload-method-toggle">
-                        <label class="radio-label">
-                            <input type="radio" name="teamUploadMethod" value="file" checked>
-                            <span>Dosya Yükle</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="teamUploadMethod" value="url">
-                            <span>URL ile Ekle</span>
-                        </label>
+                        <label class="radio-label"><input type="radio" name="teamUploadMethod" value="file" checked><span>Dosya Yükle</span></label>
+                        <label class="radio-label"><input type="radio" name="teamUploadMethod" value="url"><span>URL ile Ekle</span></label>
                     </div>
                 </div>
                 <div class="form-group" id="teamFileInputGroup">
@@ -463,18 +434,9 @@
                 <div class="form-group">
                     <label>Resim Yükleme Yöntemi</label>
                     <div class="upload-method-toggle">
-                        <label class="radio-label">
-                            <input type="radio" name="editTeamUploadMethod" value="keep" checked>
-                            <span>Mevcut Resmi Koru</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="editTeamUploadMethod" value="file">
-                            <span>Yeni Dosya Yükle</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="editTeamUploadMethod" value="url">
-                            <span>URL ile Değiştir</span>
-                        </label>
+                        <label class="radio-label"><input type="radio" name="editTeamUploadMethod" value="keep" checked><span>Mevcut Resmi Koru</span></label>
+                        <label class="radio-label"><input type="radio" name="editTeamUploadMethod" value="file"><span>Yeni Dosya Yükle</span></label>
+                        <label class="radio-label"><input type="radio" name="editTeamUploadMethod" value="url"><span>URL ile Değiştir</span></label>
                     </div>
                 </div>
                 <div class="form-group" id="editTeamFileInputGroup" style="display: none;">
@@ -491,6 +453,7 @@
         </div>
     </div>
 
+    <script src="api-config.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>
